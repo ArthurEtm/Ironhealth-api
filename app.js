@@ -14,10 +14,10 @@ const passport      = require('passport');
 
 require('./config/passport');
 
-
 mongoose.Promise = Promise;
 mongoose
   .connect('mongodb://localhost/health', {useMongoClient: true})
+
   .then(() => {
     console.log('Connected to Mongo!')
   }).catch(err => {
@@ -53,7 +53,7 @@ app.use(favicon(path.join(__dirname, 'public', 'images', 'favicon.ico')));
 
 
 // default value for title local
-app.locals.title = 'Express - Generated with IronGenerator';
+app.locals.title = ' <3 IronGenerator';
 
 
 app.use(session({
@@ -69,7 +69,7 @@ app.use(passport.session());
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:5000']
+  origin: ['http://localhost:3030']
 }));
 
 const index = require('./routes/api/index');
@@ -78,10 +78,20 @@ app.use('/', index);
 const authRoutes = require('./routes/api/auth-routes');
 app.use('/api', authRoutes);
 
-// const projectRoutes = require('./routes/api/project-routes');
-// app.use('/api', projectRoutes);
+const foodRoutes = require('./routes/api/food-routes');
+app.use('/api', foodRoutes);
 
-// const taskRoutes = require('./routes/api/task-routes');
-// app.use('/api', taskRoutes);
+const exerciseRoutes = require('./routes/api/exercise-routes');
+app.use('/api', exerciseRoutes);
+
+
+
+
+
+app.use((req, res, next) => {
+  // If no routes match, send them the React HTML.
+  res.sendFile(__dirname + "/public/index.html");
+});
+
 
 module.exports = app;
