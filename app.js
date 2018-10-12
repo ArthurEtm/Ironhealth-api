@@ -72,8 +72,6 @@ app.use(cors({
   origin: ['http://localhost:3000', "https://ironhealth.herokuapp.com"]
 }));
 
-const index = require('./routes/api/index');
-app.use('/', index);
 
 const authRoutes = require('./routes/api/auth-routes');
 app.use('/api', authRoutes);
