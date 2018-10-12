@@ -82,13 +82,8 @@ app.use('/api', foodRoutes);
 const exerciseRoutes = require('./routes/api/exercise-routes');
 app.use('/api', exerciseRoutes);
 
-
-
-
-console.log("HI");
 app.use((req, res, next) => {
   // If no routes match, send them the React HTML.
-
   res.sendFile(__dirname + "/public/index.html");
 });
 
