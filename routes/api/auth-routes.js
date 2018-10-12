@@ -8,26 +8,28 @@ const User       = require('../../models/User');
 authRoutes.post('/signup', (req, res, next) => {
     const username = req.body.username;
     const password = req.body.password;
+    const goals = req.body.goals;
+
 
     if (!username || !password) {
-      res.status(400).json({ message: 'Provide username and password' });
+      res.json({ message: 'Provide username and password' });
       return;
     }
 
     if(password.length < 7){
-        res.status(400).json({ message: 'Please make your password at least 7 characters long for security purposes.' });
+        res.json({ message: 'Please make your password at least 7 characters long for security purposes.' });
         return;
     }
   
     User.findOne({ username }, (err, foundUser) => {
 
         if(err){
-            res.status(500).json({message: "Username check went bad."});
+            res.json({message: "Username check went bad."});
             return;
         }
 
         if (foundUser) {
-            res.status(400).json({ message: 'Username taken. Choose another one.' });
+            res.json({ message: 'Username taken. Choose another one.' });
             return;
         }
   
@@ -36,12 +38,13 @@ authRoutes.post('/signup', (req, res, next) => {
   
         const aNewUser = new User({
             username:username,
-            password: hashPass
+            password: hashPass,
+            goals:goals,
         });
   console.log(aNewUser)
         aNewUser.save(err => {
             if (err) {
-                res.status(400).json({ message: 'Saving user to database went wrong.' });
+                res.json({ message: 'Saving user to database went wrong.' });
                 return;
             }
             
@@ -50,13 +53,13 @@ authRoutes.post('/signup', (req, res, next) => {
             req.login(aNewUser, (err) => {
 
                 if (err) {
-                    res.status(500).json({ message: 'Login after signup went bad.' });
+                    res.json({ message: 'Login after signup went bad.' });
                     return;
                 }
             
                 // Send the user's information to the frontend
-                // We can use also: res.status(200).json(req.user);
-                res.status(200).json(aNewUser);
+                // We can use also: res.json(req.user);
+                res.json(aNewUser);
             });
         });
     });
@@ -67,26 +70,26 @@ authRoutes.post('/signup', (req, res, next) => {
 authRoutes.post('/login', (req, res, next) => {
     passport.authenticate('local', (err, theUser, failureDetails) => {
         if (err) {
-            res.status(500).json({ message: 'Something went wrong authenticating user' });
+            res.json({ message: 'Something went wrong authenticating user' });
             return;
         }
     
         if (!theUser) {
             // "failureDetails" contains the error messages
             // from our logic in "LocalStrategy" { message: '...' }.
-            res.status(401).json(failureDetails);
+            res.json(failureDetails);
             return;
         }
 
         // save user in session
         req.login(theUser, (err) => {
             if (err) {
-                res.status(500).json({ message: 'Session save went bad.' });
+                res.json({ message: 'Session save went bad.' });
                 return;
             }
 
             // We are now logged in (that's why we can also send req.user)
-            res.status(200).json(theUser);
+            res.json(theUser);
         });
     })(req, res, next);
 });
@@ -95,14 +98,14 @@ authRoutes.post('/login', (req, res, next) => {
 authRoutes.post('/logout', (req, res, next) => {
     // req.logout() is defined by passport
     req.logout();
-    res.status(200).json({ message: 'Log out success!' });
+    res.json({ message: 'Log out success!' });
 });
 
 
 authRoutes.get('/loggedin', (req, res, next) => {
     // req.isAuthenticated() is defined by passport
     if (req.isAuthenticated()) {
-        res.status(200).json(req.user);
+        res.json(req.user);
         return;
     }
     res.status(403).json({ message: 'Unauthorized' });

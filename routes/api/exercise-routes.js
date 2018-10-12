@@ -6,14 +6,28 @@ const Exercise = require('../../models/exercise');
 
 
 /* GET home page */
+
+
+
+
+router.get('/exercises',(req,res,next)=>{
+  Exercise.find()
+    .then((response)=>{
+      res.json(response)
+})
+    .catch((err)=>{
+      res.json(err)
+})
+})
+
 router.post('/exercises/add', (req, res, next)=>{
   
   Exercise.create({
-    intensity:req.body.intensity,
-    creator:req.body.creator,
-    reps: req.body.reps,
-    sets: req.body.sets,
-   weight: req.body.weight,
+    intensity:req.body.intensity || "High",
+    creator: "Arthur",
+    reps: req.body.reps || 30,
+    sets: req.body.sets || 50,
+   weight: req.body.weight || 0,
    details:req.body.details,
    gooffor:req.body.goodfor,
    badfor:req.body.badfor,
@@ -24,7 +38,7 @@ router.post('/exercises/add', (req, res, next)=>{
     .then(response => {
         Project.findByIdAndUpdate(req.body.projectID, {$push:{ exercises: response._id }})
         .then(theResponse => {
-            res.json(theResponse);
+            res.json(response);
         })
         .catch(err => {
           res.json(err);

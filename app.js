@@ -69,7 +69,7 @@ app.use(passport.session());
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3030']
+  origin: ['http://localhost:3000']
 }));
 
 const index = require('./routes/api/index');

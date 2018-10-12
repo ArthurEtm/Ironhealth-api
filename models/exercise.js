@@ -15,7 +15,6 @@ description:String,
  workouttime:String,
  Creator:String,
  image:String,
- 
 });
 
 const Exercise = mongoose.model("Exercise", exerciseSchema);

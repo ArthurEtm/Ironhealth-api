@@ -9,6 +9,7 @@ const userSchema = new Schema({
   foods:Array,
   exercises:Array,
   users:Array,
+  goals:String,
 
 });
 
