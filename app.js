@@ -85,10 +85,10 @@ app.use('/api', exerciseRoutes);
 
 
 
-
+console.log("HI");
 app.use((req, res, next) => {
   // If no routes match, send them the React HTML.
-  console.log("HI");
+
   res.sendFile(__dirname + "/public/index.html");
 });
 
