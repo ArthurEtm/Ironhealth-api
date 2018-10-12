@@ -20,9 +20,10 @@ router.get('/exercises',(req,res,next)=>{
 })
 })
 
-router.post('/exercises/add', (req, res, next)=>{
+router.post('/exercises/add', async (req, res, next)=>{
+
   
-  Exercise.create({
+  const newEx = await Exercise.create({
     intensity:req.body.intensity || "High",
     creator: "Arthur",
     reps: req.body.reps || 30,
@@ -33,20 +34,12 @@ router.post('/exercises/add', (req, res, next)=>{
    badfor:req.body.badfor,
    workouttime:req.body.workouttime,
    type:req.body.type,
+
+  });
+
+  console.log(newEx);
    
-  })
-    .then(response => {
-        Project.findByIdAndUpdate(req.body.projectID, {$push:{ exercises: response._id }})
-        .then(theResponse => {
-            res.json(response);
-        })
-        .catch(err => {
-          res.json(err);
-      })
-    })
-    .catch(err => {
-      res.json(err);
-    })
+    res.status(200).json(newEx);
 })
 
 

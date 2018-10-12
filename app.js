@@ -16,7 +16,7 @@ require('./config/passport');
 
 mongoose.Promise = Promise;
 mongoose
-  .connect('mongodb://localhost/health', {useMongoClient: true})
+  .connect('mongodb://arthur:123456789a@ds131313.mlab.com:31313/ironhealth', {useMongoClient: true})
 
   .then(() => {
     console.log('Connected to Mongo!')
