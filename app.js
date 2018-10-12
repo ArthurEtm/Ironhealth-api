@@ -69,7 +69,7 @@ app.use(passport.session());
 
 app.use(cors({
   credentials: true,
-  origin: ['http://localhost:3000', "https://ironhealth.herokuapp.com"]
+  origin: ['http://localhost:3000', "http://ironhealth.herokuapp.com"]
 }));
 
 
